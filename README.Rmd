@@ -1,0 +1,110 @@
+---
+title: "Using limma::squeezeVar() to moderate *F*-statistics obtained from a linear model comparison"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We start by loading the `limma` library:
+
+```{r loadLibs}
+library(dplyr)
+library(limma)
+```
+
+```{r}
+n <- 5000
+m <- 15
+x_data <- rep(1:5, 3)
+noise_sd <- 1.25
+
+rss_df <- bind_rows(lapply(seq_len(n), function(x){
+  slope_f <- rnorm(1)
+  slope_m <- rnorm(1)
+  y_data_f <- slope_f * x_data + rnorm(m, mean = 0, sd = noise_sd)
+  y_data_m <- slope_m * x_data + rnorm(m, mean = 0, sd = noise_sd)
+  sex <- as.factor(c(rep("f", 15), rep("m", 15)))
+  y_data_full <- c(y_data_f, y_data_m)
+  x_data_ful <- c(x_data, x_data)
+  null_model <- lm(y_data_full ~ x_data)
+  alt_model <- lm(y_data ~ x_data)
+  rss0 <- residuals(null_model)^2
+  rss1 <- residuals(alt_model)^2
+  d1 = 
+  d2 =
+  return(data.frame(rss0 = rss0,
+                    rss1 = rss1,
+                    d1 = d1,
+                    d2 = d2))
+}))
+```
+
+
+
+Then, we define some arbitrary values for our degrees of freedom, sample sizes and plotting values.
+
+```{r setParams}
+df_1 <-  14
+df_2 <- 26
+n <- 5000
+xg <- seq(0, 120, by = 0.05)
+```
+
+Next, we generate random $\chi^{2}$ distributed data with the above choosen degrees of freedom.
+
+```{r getRandomChiSqdata}
+set.seed(12)
+chi_sq_numerator <- rchisq(n, df = df_1)
+chi_sq_denominator <- rchisq(n, df = df_2)
+```
+
+To check that we actually got $\chi^{2}$ distributed data with the respective degrees of freedom, we check their distributions.
+
+```{r inspectNumerator}
+hist(chi_sq_numerator, breaks = 100, probability = TRUE)
+lines(xg, dchisq(xg, df = df_1), col = "red")
+```
+
+```{r inspectDenominator}
+hist(chi_sq_denominator, breaks = 100, probability = TRUE)
+lines(xg, dchisq(xg, df = df_2), col = "red")
+```
+Now, we compute our $F$-statistics with $F = \frac{\chi^2_{1}}{\chi^2_{2}} \frac{d_{2}}{d_{1}}$:
+```{r computeF}
+f_standard <- (chi_sq_numerator/df_1)/(chi_sq_denominator/df_2)
+```
+
+and inspect if our data is distributed as expected:
+
+```{r inspectF}
+hist(f_standard, breaks = 100, probability = TRUE)
+lines(xg, df(xg, df1 = df_1, df2 = df_2), col = "red")
+```
+
+Now, we would like to obtain more precise estimators $\widetilde{s}^2_{i}$ for our $\sigma^2_{i} = \frac{\chi^2_{2}_{i}}{d_{2}}$ and ultimately obtain a partially moderated $F$-statistic. To achieve that, we shrink individual estimates $s^2_{i}$ towards $\text{E}[\sigma^2 | s^2]$. In order to do so, we assume that our true $\sigma^2$ follows a scaled inverse $\chi^2$ distribution, or if we consider $\frac{1}{\sigma^2}$ instead:
+$$\frac{1}{\sigma^2} \sim \frac{1}{d_{0}s_{0}^2} \chi^{2}$$
+
+
+```{r squeezeVar}
+chi_sq_denominator_squeezeVar <- squeezeVar(chi_sq_denominator/df_2, df = df_2)
+df_0 <- chi_sq_denominator_squeezeVar$df.prior
+squeezed_chi_sq_denominator <- chi_sq_denominator_squeezeVar$var.post
+```
+
+
+```{r computeModF}
+f_moderated <- (chi_sq_numerator/df_1)/(squeezed_chi_sq_denominator)
+```
+
+```{r inspectModF}
+hist(f_moderated, breaks = 100, probability = TRUE)
+lines(xg, df(xg, df1 = df_1, df2 = df_0 + df_2), col = "red")
+```
+```{r inspectPs}
+pvals <- 1 - pf(f_moderated, df1 = df_1, df2 = df_0 + df_2)
+hist(pvals, breaks = 12)
+abline(h = n/10, col="black", lwd=3, lty=2)
+```
+
