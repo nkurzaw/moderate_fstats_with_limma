@@ -75,7 +75,7 @@ theorem it can be derived that the posterior mean
 
 The hyperparameters <img src="https://render.githubusercontent.com/render/math?math=s^2_{0}"> and <img src="https://render.githubusercontent.com/render/math?math=d_{0}"> can be computed by fitting
 <img src="https://render.githubusercontent.com/render/math?math=s^2"> as a scaled *F*-distriubtion with
-<img src="https://render.githubusercontent.com/render/math?math=s^2 \sim s^2_{0}F_{d, d_{0}}">. Details on the parameter estimation
+<img src="https://render.githubusercontent.com/render/math?math=s^+\sim+s^2_{0}F_{d, d_{0}}">. Details on the parameter estimation
 are described by Smyth et al. (2004) and implemented within the `limma`
 R package in the function `squeezeVar()`.
 
@@ -89,7 +89,7 @@ squeezed_chi_sq_denominator <- chi_sq_denominator_squeezeVar$var.post
 ```
 
 Since our estimated <img src="https://render.githubusercontent.com/render/math?math=\widetilde{s}^2_{i}"> is already scaled by its
-posterior degrees of freedom <img src="https://render.githubusercontent.com/render/math?math=\widetilde{d}_{2} = d_{0} + d_{2}">, our
+posterior degrees of freedom <img src="https://render.githubusercontent.com/render/math?math=\widetilde{d}_{2} = d_{0}%2Bd_{2}">, our
 moderated *F*-statistic is computed by <img src="https://render.githubusercontent.com/render/math?math=F=\frac{\chi^2_{1}}{\widetilde{s}^{2}}\frac{1}{d_{1}}">
 
 ``` r
