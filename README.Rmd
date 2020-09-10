@@ -1,6 +1,6 @@
 ---
 title: "Using limma::squeezeVar() to moderate *F*-statistics"
-output: github_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -53,7 +53,7 @@ hist(f_standard, breaks = 100, probability = TRUE)
 lines(xg, df(xg, df1 = df_1, df2 = df_2), col = "red")
 ```
 
-Now, we would like to obtain more precise estimators $\widetilde{s}^2_{i}$ for our true $\sigma^2_{i} = \frac{\chi^2_{2}_{i}}{d_{2}}$ and ultimately obtain a partially moderated $F$-statistic. To achieve that, we phrase our problem as a Bayesian estimation of the variance of a Normal distribution around a  known mean $\mu$ and use all observed variances $s^2$ to shrink individual estimates $s^2_{i}$ towards $\text{E}[s^2]$. In order to do so, we assume that the true $\sigma^2$ follows a scaled inverse $\chi^2$ distribution, or if we consider $\frac{1}{\sigma^2}$:
+Now, we would like to obtain more precise estimators $\widetilde{s}^2_{i}$ for our true $\sigma^{2}_{i} = \frac{\chi^{2}_{2,i}}{d_{2}}$ and ultimately obtain a partially moderated $F$-statistic. To achieve that, we phrase our problem as a Bayesian estimation of the variance of a Normal distribution around a  known mean $\mu$ and use all observed variances $s^2$ to shrink individual estimates $s^2_{i}$ towards $\text{E}[s^2]$. In order to do so, we assume that the true $\sigma^2$ follows a scaled inverse $\chi^2$ distribution, or if we consider $\frac{1}{\sigma^2}$:
 $$\frac{1}{\sigma^2} \sim \frac{1}{d_{0}s_{0}^2} \chi^{2}$$
 Using Bayes' theorem it can be derived that the posterior mean $\widetilde{s}^2_{i}$ of this model can be computed with
 $$\widetilde{s}^2_{i} = \frac{d_{0}s^2_{0} + d_{2}s^2_{i}}{d_{0} + d_{g}$$.
@@ -69,7 +69,8 @@ df_0 <- chi_sq_denominator_squeezeVar$df.prior
 squeezed_chi_sq_denominator <- chi_sq_denominator_squeezeVar$var.post
 ```
 
-Since our estimated $\widetilde{s}^2_{i}$ is already scaled by its posterior degrees of freedom $\widetilde{d}_{2} = d_{0} + d_{2}$, our moderated $F$-statistic is computed by
+Since our estimated $\widetilde{s}^2_{i}$ is already scaled by its posterior degrees of freedom $\widetilde{d}_{2} = d_{0} + d_{2}$, our moderated $F$-statistic is computed by 
+$$F=\frac{\chi^2_{1}}{\widetilde{s}^{2}}\frac{1}{d_{1}}$$
 
 ```{r computeModF}
 f_moderated <- (chi_sq_numerator/df_1)/(squeezed_chi_sq_denominator)
