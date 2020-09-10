@@ -71,7 +71,7 @@ consider <img src="https://render.githubusercontent.com/render/math?math=\frac{1
 <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{\sigma^2} \sim \frac{1}{d_{0}s_{0}^2} \chi^{2}"> Using Bayes’
 theorem it can be derived that the posterior mean
 <img src="https://render.githubusercontent.com/render/math?math=\widetilde{s}^2_{i}"> of this model can be computed with
-<img src="https://render.githubusercontent.com/render/math?math=\widetilde{s}^2_{i} = \frac{d_{0}s^2_{0} + d_{2}s^2_{i}}{d_{0} + d_{g}">.
+<img src="https://render.githubusercontent.com/render/math?math=\widetilde{s}^2_{i} = \frac{d_{0}s^2_{0}%2Bd_{2}s^2_{i}}{d_{0}%2Bd_{g}}">.
 
 The hyperparameters <img src="https://render.githubusercontent.com/render/math?math=s^2_{0}"> and <img src="https://render.githubusercontent.com/render/math?math=d_{0}"> can be computed by fitting
 <img src="https://render.githubusercontent.com/render/math?math=s^2"> as a scaled *F*-distriubtion with
