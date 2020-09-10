@@ -60,7 +60,7 @@ lines(xg, df(xg, df1 = df_1, df2 = df_2), col = "red")
 
 Now, we would like to obtain more precise estimators
 <img src="https://render.githubusercontent.com/render/math?math=\widetilde{s}^2_{i}"> for our true
-<img src="https://render.githubusercontent.com/render/math?math=\sigma^2_{i} = \frac{\chi^2_{2}_{i}}{d_{2}}"> and ultimately obtain a
+<img src="https://render.githubusercontent.com/render/math?math=\sigma^2_{i} = \frac{\chi^2_{2,i}}{d_{2}}"> and ultimately obtain a
 partially moderated *F*-statistic. To achieve that, we phrase our
 problem as a Bayesian estimation of the variance of a Normal
 distribution around a known mean and use all observed variances
