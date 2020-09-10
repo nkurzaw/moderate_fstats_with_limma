@@ -96,7 +96,7 @@ moderated *F*-statistic is computed by <img src="https://render.githubuserconten
 f_moderated <- (chi_sq_numerator/df_1)/(squeezed_chi_sq_denominator)
 ```
 
-We inspect our moderated $F$ distribution
+We inspect our moderated *F* distribution
 
 ``` r
 hist(f_moderated, breaks = 100, probability = TRUE)
@@ -104,7 +104,7 @@ lines(xg, df(xg, df1 = df_1, df2 = df_0 + df_2), col = "red")
 ```
 
 ![](README_files/figure-gfm/inspectModF-1.png)<!-- --> If we were to
-obtain $p$-values now, these would be distributed as follows:
+obtain *p*-values now, these would be distributed as follows:
 
 ``` r
 pvals <- 1 - pf(f_moderated, df1 = df_1, df2 = df_0 + df_2)
