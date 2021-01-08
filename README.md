@@ -71,7 +71,7 @@ consider <img src="https://render.githubusercontent.com/render/math?math=\frac{1
 <img src="https://render.githubusercontent.com/render/math?math=\frac{1}{\sigma^2} \sim \frac{1}{d_{0}s_{0}^2} \chi^{2}"> Using Bayes’
 theorem it can be derived that the posterior mean
 <img src="https://render.githubusercontent.com/render/math?math=\widetilde{s}^2_{i}"> of this model can be computed with
-<img src="https://render.githubusercontent.com/render/math?math=\widetilde{s}^2_{i} = \frac{d_{0}s^2_{0} + d_{2}s^2_{i}}{d_{0} + d_{g}">.
+<img src="https://render.githubusercontent.com/render/math?math=\widetilde{s}^2_{i} = \frac{d_{0}s^2_{0}%2Bd_{2}s^2_{i}}{d_{0}%2Bd_{g}}">.
 
 The hyperparameters <img src="https://render.githubusercontent.com/render/math?math=s^2_{0}"> and <img src="https://render.githubusercontent.com/render/math?math=d_{0}"> can be computed by fitting
 <img src="https://render.githubusercontent.com/render/math?math=s^2"> as a scaled *F*-distriubtion with
@@ -96,7 +96,7 @@ moderated *F*-statistic is computed by <img src="https://render.githubuserconten
 f_moderated <- (chi_sq_numerator/df_1)/(squeezed_chi_sq_denominator)
 ```
 
-We inspect our moderated $F$ distribution
+We inspect our moderated *F* distribution
 
 ``` r
 hist(f_moderated, breaks = 100, probability = TRUE)
@@ -104,7 +104,7 @@ lines(xg, df(xg, df1 = df_1, df2 = df_0 + df_2), col = "red")
 ```
 
 ![](README_files/figure-gfm/inspectModF-1.png)<!-- --> If we were to
-obtain $p$-values now, these would be distributed as follows:
+obtain *p*-values now, these would be distributed as follows:
 
 ``` r
 pvals <- 1 - pf(f_moderated, df1 = df_1, df2 = df_0 + df_2)
